@@ -5,9 +5,10 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-
 const url = process.env.DB_URL
+const port = process.env.PORT
 const client = new MongoClient(url);
+
 async function run() {
     try {
         await client.connect();
@@ -21,21 +22,23 @@ run().catch(console.dir);
 app.use(express.json());
 app.use(cors());
 
-
 app.post('/registration', async (req, res) => {
   try {
     const collection = client.db("auth").collection("user");
+
+    const emailExist = await collection.findOne({ email: req.body.email});
+    if (emailExist) {
+      return res.status(409).json({ message: "email exist"});
+    }
+
     const result = await collection.insertOne(req.body);
-    // res.status(200).json({ message: "Registration successful"});
+    res.status(200).json({ message: "Registration successful"});
   } catch (err) {
     console.log(err);
-    // res.status(500).json({ message: "Error registering user" });
+    res.status(500).json({ message: "Error registering user" });
   }
 });
 
-  
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });

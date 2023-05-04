@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Login.scss'
 
-export default function SignIn() {
+const SignIn = () => {
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -46,3 +46,5 @@ export default function SignIn() {
             </section>
     );
 }
+
+export default SignIn;

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import bcrypt from 'bcryptjs';
-import './Registration.scss'
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { set } from 'mongoose';
 
-export default function Registration() {
+const Registration = () => {
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -17,7 +15,6 @@ export default function Registration() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [passwordValid, setPasswordValid] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false);
 
     const registerUser = async (e) => {
@@ -79,8 +76,6 @@ export default function Registration() {
             },
             body: JSON.stringify(user)
         })
-
-        // const data = await response.json();
         
         if (response.status === 200) {
             toast.success("account created", {
@@ -91,10 +86,12 @@ export default function Registration() {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-              });
-            return;
+            });
+            setTimeout(function() {
+                window.location.href = "/home";
+            }, 2000);
         }
-
+        
         if (response.status === 409) {
             setEmail('');
             toast.error("email already token", {
@@ -105,13 +102,12 @@ export default function Registration() {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-              });
+            });
             return;
         }
-
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
         
        } catch (error) {
         console.log(error)
@@ -159,3 +155,5 @@ export default function Registration() {
             </section>
     );
 }
+
+export default Registration;
