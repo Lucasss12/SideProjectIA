@@ -33,7 +33,7 @@ const Registration = () => {
             return;
         }
 
-        const passwordValidRegex = /^(?=.*[A-Z]).{8,}$/;
+        const passwordValidRegex = /^(?=.*[A-Z]).{2,}$/; // add 8 caracter
         const passwordValid = passwordValidRegex.test(password);
       
         if (!passwordValid) {
@@ -89,7 +89,7 @@ const Registration = () => {
             });
             setTimeout(function() {
                 window.location.href = "/home";
-            }, 2000);
+            }, 3000);
         }
         
         if (response.status === 409) {
